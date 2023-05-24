@@ -7,9 +7,7 @@ using namespace std;
 namespace ariel{
 
     Character::Character(std::string name, Point location): name(name), location(location), health(0)
-    {
-        
-    }
+    {}
 
 
     bool Character::isAlive()
@@ -34,6 +32,11 @@ namespace ariel{
     std::string Character::getName()
     {
         return this->name;
+    }
+
+    void Character::setName(std::string name)
+    {
+        this->name = name;
     }
 
     Point Character::getLocation()
@@ -63,13 +66,13 @@ namespace ariel{
 
     // void Character::print()
     // {
-    //     // cout << "Character: " << this->name << endl;
-    //     // if(this->isAlive())
-    //     // {
-    //     //     cout << "Damage: " << this->damage << endl;
-    //     // }
-    //     // cout << "Location: " << this->location.getX() << ", " << this->location.getY() << endl;
-    //     // cout << "(" << this->name  << ")" << endl;
+    //     std::cout << "Character: " << this->name << std::endl;
+    //     if(this->isAlive())
+    //     {
+    //         std::cout << "Damage: " << this->health << std::endl;
+    //     }
+    //     std::cout << "Location: " << this->location.getX() << ", " << this->location.getY() << std::endl;
+    //     std::cout << "(" << this->name  << ")" << std::endl;
     //     std::cout << " " << std::endl;
 
     // }
@@ -104,12 +107,8 @@ namespace ariel{
         {
             other->hit(10);
             this->bullets--;
-            // printf("the cowboy %s shooting  %s\n", this->getName().c_str(), other->getName().c_str());
         }
-        // else
-        // {
-        //     cout << "You are dead or out of bullets" << endl;
-        // }
+
     }
 
     bool Cowboy::hasBullets()
@@ -200,8 +199,5 @@ namespace ariel{
         this->health = 150;
         this->speed = 8;
     }
-
-        
-
 
 }

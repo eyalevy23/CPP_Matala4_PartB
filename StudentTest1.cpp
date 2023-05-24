@@ -436,8 +436,11 @@ TEST_SUITE("Battle related methods") {
 TEST_SUITE("Battle simulations") {
 
     auto multi_attack = [](int n, Team &attacker, Team &defender) {
+        std::cout << "in multi attack" << std::endl;
         for (int i = 0; i < n; i++) {
+            std::cout <<"how much defnfer left:" << defender.stillAlive() << std::endl;
             if (defender.stillAlive()) {
+                std::cout << "in if" << std::endl;
                 attacker.attack(&defender);
             }
         }
@@ -517,11 +520,19 @@ TEST_SUITE("Battle simulations") {
         team2.add(team2_c3);
         team2.add(team2_c4);
 
+        // team2_c1->setName("team2_c1");
+        // team2_c2->setName("team2_c2");
+        // team2_c3->setName("team2_c3");
+        // team2_c4->setName("team2_c4");
+        // team_c1->setName("team1_c1");
+        // team_c2->setName("team1_c2");
+        // team_c3->setName("team1_c3");
+        
+
         multi_attack(4, team1, team2);
 
         // The captain of team2 is the closest enemy to the captain of team1, and therefore should be dead.
         CHECK((!team2_c2->isAlive() && team2_c1->isAlive() && team2_c3->isAlive() && team2_c4->isAlive()));
-
         // At this point, the captain should be team2_c3; hence, the next enemy to be attacked by team2 should team_c3.
         multi_attack(6, team2, team1);
         CHECK((!team_c3->isAlive() && team_c1->isAlive() && team_c2->isAlive()));

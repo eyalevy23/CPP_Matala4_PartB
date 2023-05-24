@@ -32,7 +32,7 @@ namespace ariel
     double Point::distance(const Point& other) const {
         double dx = other.x_axis - x_axis;
         double dy = other.y_axis - y_axis;
-        return sqrt(dx * dx + dy * dy);
+        return sqrt((dx * dx) + (dy * dy));
     }
 
     void Point::setPoint(Point other)

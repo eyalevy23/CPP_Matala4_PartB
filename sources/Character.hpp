@@ -26,9 +26,7 @@ namespace ariel{
             int health;
             std::string name;
             Point location;
-        // private:
-            
-            
+            void setName(std::string name);// need to be deleted
             bool isMemberOfTeam = false;
     };
 

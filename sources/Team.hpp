@@ -22,12 +22,13 @@ namespace ariel{
             virtual void attack(Team *team);
             int stillAlive();
             int getTeamSize();
-            std::string getTeamName();
+            // std::string getTeamName();
             std::string getTeamLeaderName();
             Character getCharacter();
             void print();
             Character* findClosestEnemy(Team *teamToAttack);
             void teamOrder();
+            int changeLeader(Team* team);
 
             // copy constructor
             Team(Team &);

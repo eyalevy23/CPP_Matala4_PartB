@@ -66,26 +66,50 @@ namespace ariel
         }
     }
 
-Character* Team::findClosestEnemy(Team* teamToAttack)
-{
-    //find closest enemy with Point
-    int closestEnemyIndex = 0;
-    double closestEnemyDistance = -1;
-    for(int i = 0; i < teamToAttack->getTeamSize(); i++)
+    Character* Team::findClosestEnemy(Team* teamToAttack)
     {
-        if(teamToAttack->members[i]->isAlive())
+        //find closest enemy with Point
+        int closestEnemyIndex = 0;
+        double closestEnemyDistance = -1;
+        for(int i = 0; i < teamToAttack->getTeamSize(); i++)
         {
-            double temp = this->leader->distance(teamToAttack->members[i]);
-            if(temp < closestEnemyDistance || closestEnemyDistance == -1)
+            if(teamToAttack->members[i]->isAlive())
             {
-                closestEnemyDistance = temp;
-                closestEnemyIndex = i;
+                double temp = this->leader->distance(teamToAttack->members[i]);
+                if(temp < closestEnemyDistance || closestEnemyDistance == -1)
+                {
+                    closestEnemyDistance = temp;
+                    closestEnemyIndex = i;
+                }
             }
         }
+        return teamToAttack->members[closestEnemyIndex];
     }
-    return teamToAttack->members[closestEnemyIndex];
-}
 
+    int Team::changeLeader(Team* team)
+    {   
+        int leaderIndex = 0;
+        double distance = -1;
+            Point leaderLocation = team->leader->getLocation();
+            for(int i = 0; i < team->currentTeamSize; i++)
+            {
+                if(team->members[i] == team->leader)
+                {
+                    continue;
+                }
+                if(team->members[i]->isAlive())
+                {
+                    double temp = team->members[i]->getLocation().distance(leaderLocation);
+                    if(temp < distance || distance == -1)
+                    {
+                        distance = temp;
+                        team->leader = team->members[i];
+                        leaderIndex = i;
+                    }
+                }
+            }
+            return leaderIndex;
+    }
 
     void Team::attack(Team* teamToAttack)
     {
@@ -105,26 +129,13 @@ Character* Team::findClosestEnemy(Team* teamToAttack)
         {
             throw std::runtime_error("Team is attacking itself");
         }
-
         //change leader if needed
-        if(members[0]->isAlive() == false)
+        if(this->leader->isAlive() == false)
         {
-            //find new leader by distance
-            double distance = -1;
-            for(int i = 1; i < currentTeamSize; i++)
-            {
-                if(members[i]->isAlive())
-                {
-                    double temp = members[i]->getLocation().distance(this->leader->getLocation());
-                    if(temp < distance || distance == -1)
-                    {
-                        distance = temp;
-                        this->leader = members[i];
-                    }
-                }
-            }
+            int l = changeLeader(this);
+            this->leader = this->members[l];
         }
-
+         
         Character* closestEnemy = findClosestEnemy(teamToAttack);
 
         //attack
@@ -167,25 +178,31 @@ Character* Team::findClosestEnemy(Team* teamToAttack)
                 }
             }
         }
+        // if leader of teamToAttack is dead, find new leader
+        if(teamToAttack->leader->isAlive() == false)
+        {
+            int l = changeLeader(teamToAttack);
+            teamToAttack->leader = teamToAttack->members[l];
+        }
     }
 
-   int Team::getTeamSize()
+    int Team::getTeamSize()
     {
         return (currentTeamSize);
     }
     
-int Team::stillAlive()
-{
-    int alive = 0;
-    for(int i = 0; i < this->getTeamSize(); i++)
+    int Team::stillAlive()
     {
-        if(this->members[i]->isAlive())
+        int alive = 0;
+        for(int i = 0; i < this->getTeamSize(); i++)
         {
-            alive++;
+            if(this->members[i]->isAlive())
+            {
+                alive++;
+            }
         }
+        return alive;
     }
-    return alive;
-}
 
 
 
@@ -196,19 +213,20 @@ int Team::stillAlive()
         {
             printer += members[i]->print() + "\n";
         }
-        cout << printer << endl;
+        std::cout << printer << std::endl;
     }
 
-    std::string Team::getTeamName()
-    {
-        //team name 
-        std::string leaderName = members[0]->getName();
-        return leaderName;
-    }
+    // std::string Team::getTeamName()
+    // {
+    //     //team name 
+    //     std::string leaderName = members[0]->getName();
+    //     return leaderName;
+    // }
 
     std::string Team::getTeamLeaderName()
     {
-        return "";
+        std::string leaderName = this->leader->getName();
+        return leaderName;
     }
 
     void Team::teamOrder()
