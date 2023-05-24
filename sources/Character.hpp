@@ -10,6 +10,11 @@ namespace ariel{
     {
         public:
             Character(std::string name, Point location);
+            virtual ~Character() = default;
+            Character(Character &&) = default;
+            Character(const Character &) = default;
+            Character &operator=(Character &&) = default;
+            Character &operator=(const Character &) = default;
             bool isAlive();
             double distance(Character *other);
             void hit(int damageToCharacter);

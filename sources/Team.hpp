@@ -17,7 +17,7 @@ namespace ariel{
             Character *leader;
 
             Team(Character *leader);//declare default constructor
-            ~Team();//declare destructor
+            virtual ~Team();//declare destructor
             void add(Character *leader);
             virtual void attack(Team *team);
             int stillAlive();
